@@ -7,11 +7,15 @@ import { UserRepository } from './repositories/UserRepository';
 export class UserService {
   constructor(@InjectRepository(User) private userRepository: UserRepository) {}
 
-  public getHello(): string {
-    return 'Hello World!';
+  public findAllUsers(): Promise<User[]> {
+    return this.userRepository.find();
   }
 
-  public insertUser(user: User) {
-    this.userRepository.insert(user);
+  public insertOrUpdateUser(user: User): Promise<User> {
+    return this.userRepository.save(user);
+  }
+
+  public findUserById(id: number): Promise<User> {
+    return this.userRepository.findOne(id);
   }
 }
