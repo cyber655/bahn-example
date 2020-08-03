@@ -1,13 +1,12 @@
 // src/config/config.service.ts
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
-
 require('dotenv').config();
 
 class DatabaseConfig {
   constructor(private env: { [k: string]: string | undefined }) {}
 
-  private getValue(key: string, throwOnMissing = true): string {
+  private getValue(key: string, throwOnMissing: boolean = true): string {
     const value = this.env[key];
     if (!value && throwOnMissing) {
       throw new Error(`config error - missing env.${key}`);
@@ -21,11 +20,11 @@ class DatabaseConfig {
     return this;
   }
 
-  public getPort() {
+  public getPort(): string {
     return this.getValue('PORT', true);
   }
 
-  public isProduction() {
+  public isProduction(): boolean {
     const mode = this.getValue('MODE', false);
     return mode != 'DEV';
   }
@@ -49,8 +48,6 @@ class DatabaseConfig {
     };
   }
 }
-
-debugger;
 
 const databaseConfig = new DatabaseConfig(process.env).ensureValues([
   'POSTGRES_HOST',
